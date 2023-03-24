@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  norfair-handtracker:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    command: python3 /demo/src/app.py
+    runtime: nvidia
+    volumes:
+      - ./src:/demo/src/
+    ports:
+      - 8000:8000
