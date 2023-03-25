@@ -1,5 +1,3 @@
-import cv2
-import norfair
 import numpy as np
 from norfair import Detection
 
@@ -29,9 +27,7 @@ def hand_detections_to_norfair_detections(boxes, scores):
 
     return norfair_detections
 
-def run(detection_graph, sess, tracker, path):
-
-    image_np = cv2.imread(path)
+def run(detection_graph, sess, tracker, image_np):
 
     boxes, scores = detector_utils.detect_objects(image_np,
                                                       detection_graph, sess)
