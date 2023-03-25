@@ -1,15 +1,18 @@
 import logging
 import os
-import uuid
 import shutil
-import cv2
+import sys
+import uuid
 
-from hands import run, OpenposeDetector
-from norfair import Tracker
+import cv2
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from flask_restful import Api, Resource
+from norfair import Tracker
 from norfair.distances import create_keypoints_voting_distance
+
+from hands import run
+from utils import detector_utils as detector_utils
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
@@ -26,7 +29,7 @@ logger = logging.getLogger()
 
 api = Api(app, prefix='/api')
 
-detector = OpenposeDetector(None)
+detection_graph, sess = detector_utils.load_inference_graph()
 
 trackers = {}
 
@@ -67,7 +70,7 @@ class RunInferenceAPIView(Resource):
                                         pointwise_hit_counter_max=10,
                                     )
 
-        res["results"] = run(detector, trackers["id"], path)
+        res["results"] = run(detection_graph, sess, trackers["id"], path)
         shutil.rmtree(folder_path)
 
         res["success"] = True
