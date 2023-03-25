@@ -1,0 +1,4 @@
+tensorflow
+numpy
+opencv-python
+git+https://github.com/tryolabs/norfair.git@master
